@@ -1,0 +1,29 @@
+# Virtual environment
+venv/
+.venv
+
+# Pytest cache
+.pytest_cache/
+
+# VSCode settings (optional)
+.vscode/
+
+# data
+raw_data/
+data/
+
+# results
+results/
+logs/
+*.pt
+*.pth
+*.h5
+
+# python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# mac
+.DS_Store
+**/.DS_Store
