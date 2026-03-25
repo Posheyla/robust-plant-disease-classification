@@ -85,13 +85,14 @@ class PlantVillageMetadataExtractor:
 
     def _get_image_identifier(self, file_name):
         """
-        Clean the filename to get a canonical image identifier.
+        Convert filename to a canonical image identifier used for leaf_map lookup.
 
         Examples:
         - '1.jpg' -> '1'
         - '1_final_masked.jpg' -> '1'
         - 'abc___1.jpg' -> '1'
         - '1copy.jpg' -> '1'
+        - 'Com.G_TgS_FL 0004.JPG' -> 'com.g_fl 0004'
         """
         image_identifier = file_name.replace("_final_masked", "")
 
@@ -99,10 +100,17 @@ class PlantVillageMetadataExtractor:
             image_identifier = image_identifier.split("___")[-1]
 
         image_identifier = image_identifier.split("copy")[0]
-        image_identifier = image_identifier.replace(".jpg", "").replace(".JPG", "")
-        image_identifier = image_identifier.replace(".jpeg", "").replace(".JPEG", "")
-        image_identifier = image_identifier.replace(".png", "").replace(".PNG", "")
-        image_identifier = image_identifier.strip()
+
+        # remove extension more robustly
+        image_identifier = image_identifier.rsplit(".", 1)[0]
+
+        image_identifier = image_identifier.strip().lower()
+        
+        ## Fix inconsistency in leaf_map
+        # Tomato target spot: "com.g_tgs_fl 0004" -> "com.g_fl 0004"
+        image_identifier = image_identifier.replace("com.g_tgs_fl", "com.g_fl")
+        
+
 
         return image_identifier
 
@@ -111,25 +119,19 @@ class PlantVillageMetadataExtractor:
         Assign physical leaf group ID from image_identifier + leaf_map.
         This is critical for leakage-free splitting.
         """
-        lookup_key = image_identifier.lower().strip()
+        suggestions = self.leaf_map.get(image_identifier)
 
-        if lookup_key in self.leaf_map:
-            suggestions = self.leaf_map[lookup_key]
-            # suggestions could be:
-            # ["leaf_1_Apple___Apple_scab"]
-            # or
-            # ["leaf_5_Apple___Apple_scab", "leaf_5_Apple___Black_rot"]
-
-            if len(suggestions) == 1:
-                return suggestions[0]
-            else:
-                for suggestion in suggestions:
-                    if label in suggestion:
-                        return suggestion
-
-                return f"fallback_{image_identifier}"
-        else:
+        if not suggestions:
             return f"fallback_{image_identifier}"
+
+        if len(suggestions) == 1:
+            return suggestions[0]
+
+        for suggestion in suggestions:
+            if label in suggestion:
+                return suggestion
+
+        return f"fallback_{image_identifier}"
 
     def scan_dataset(self, data_type="color"):
         """
