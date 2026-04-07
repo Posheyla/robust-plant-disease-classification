@@ -14,11 +14,11 @@ from dataset import PlantVillageDataset
 SPLIT_CSV = "data/split.csv"
 BASE_DIR = "raw_data/PlantVillage-Dataset"
 
-BATCH_SIZE = 32
-NUM_EPOCHS = 1 # increase later with GPU
+BATCH_SIZE = 64
+NUM_EPOCHS = 10 # increase later with GPU
 LEARNING_RATE = 1e-3
 NUM_WORKERS = 0  # use 0 first for debugging; can increase later
-IMAGE_SIZE = 128 # increase later
+IMAGE_SIZE = 224 # increase later
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -32,12 +32,18 @@ train_transform = transforms.Compose([
     transforms.RandomHorizontalFlip(),
     transforms.RandomRotation(15),
     transforms.ToTensor(),
+    transforms.Normalize(
+    mean=[0.485, 0.456, 0.406],
+    std=[0.229, 0.224, 0.225])
 ])
 
 val_transform = transforms.Compose([
     transforms.ToPILImage(),
     transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
     transforms.ToTensor(),
+    transforms.Normalize(
+    mean=[0.485, 0.456, 0.406],
+    std=[0.229, 0.224, 0.225])
 ])
 
 
@@ -72,8 +78,8 @@ val_dataset = PlantVillageDataset(
     label_to_idx=label_to_idx,
 )
 
-train_dataset.df = train_dataset.df.sample(5000, random_state=42).reset_index(drop=True)
-val_dataset.df = val_dataset.df.sample(1000, random_state=42).reset_index(drop=True)
+#train_dataset.df = train_dataset.df.sample(5000, random_state=42).reset_index(drop=True)
+#val_dataset.df = val_dataset.df.sample(1000, random_state=42).reset_index(drop=True)
 
 test_color_dataset = PlantVillageDataset(
     split_csv=SPLIT_CSV,
@@ -129,16 +135,18 @@ test_seg_loader = DataLoader(
 # =========================
 # Model
 # =========================
-model = models.resnet18(weights=None)
+model = models.resnet18(weights="IMAGENET1K_V1")
+#freeze backbone (optional)
+for param in model.parameters():
+    param.requires_grad = False
 model.fc = nn.Linear(model.fc.in_features, num_classes)
 model = model.to(DEVICE)
-
 
 # =========================
 # Loss / Optimizer
 # =========================
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+optimizer = optim.Adam(model.fc.parameters(), lr=LEARNING_RATE, weight_decay=1e-4)
 
 
 # =========================
