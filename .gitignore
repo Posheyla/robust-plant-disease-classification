@@ -9,11 +9,10 @@ venv/
 .vscode/
 
 # data
-raw_data/
+raw_data
 data/
 
 # results
-results/
 logs/
 *.pt
 *.pth
