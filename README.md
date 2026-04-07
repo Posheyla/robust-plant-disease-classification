@@ -19,6 +19,8 @@ NN-Project/
 ├── raw_data/
 │   └── PlantVillage-Dataset/
 │       (Download from: https://github.com/spMohanty/PlantVillage-Dataset/tree/master)
+│        └── raw/
+│        └── leaf-map.json
 │
 ├── data/
 │   ├── metadata.csv
