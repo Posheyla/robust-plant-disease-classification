@@ -1,0 +1,34 @@
+{
+  "config": {
+    "batch_size": 64,
+    "num_epochs": 15,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "image_size": 128,
+    "dropout": 0.5,
+    "device": "cuda",
+    "use_class_weights": false
+  },
+  "test_color": {
+    "loss": 0.11391077257322195,
+    "acc": 0.9596937978440868,
+    "accuracy": 0.9596937978440868,
+    "macro_f1": 0.9441168399261781,
+    "weighted_f1": 0.9594781420291619,
+    "confusion_matrix_shape": [
+      31,
+      31
+    ]
+  },
+  "test_segmented": {
+    "loss": 2.4813568546897806,
+    "acc": 0.5200749882830807,
+    "accuracy": 0.5200749882830807,
+    "macro_f1": 0.36647527939973723,
+    "weighted_f1": 0.5065239898844899,
+    "confusion_matrix_shape": [
+      31,
+      31
+    ]
+  }
+}

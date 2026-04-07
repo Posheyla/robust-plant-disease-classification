@@ -1,0 +1,37 @@
+                                               precision    recall  f1-score   support
+
+                           Apple___Apple_scab       0.88      0.96      0.91        89
+                            Apple___Black_rot       1.00      0.98      0.99        85
+                     Apple___Cedar_apple_rust       0.93      1.00      0.96        40
+                              Apple___healthy       0.98      0.95      0.96       250
+                          Blueberry___healthy       0.98      0.99      0.98       229
+     Cherry_(including_sour)___Powdery_mildew       0.96      0.97      0.96       127
+            Cherry_(including_sour)___healthy       0.98      0.98      0.98       130
+                            Grape___Black_rot       0.96      0.97      0.96       176
+                 Grape___Esca_(Black_Measles)       0.99      0.99      0.99       208
+   Grape___Leaf_blight_(Isariopsis_Leaf_Spot)       0.99      0.96      0.97       164
+     Orange___Haunglongbing_(Citrus_greening)       0.99      1.00      1.00       862
+                       Peach___Bacterial_spot       0.98      0.96      0.97       353
+                              Peach___healthy       1.00      1.00      1.00        42
+                Pepper,_bell___Bacterial_spot       0.93      0.95      0.94       149
+                       Pepper,_bell___healthy       0.93      0.98      0.95       233
+                        Potato___Early_blight       0.97      0.97      0.97       148
+                         Potato___Late_blight       0.99      0.74      0.85       148
+                             Potato___healthy       1.00      0.55      0.71        20
+                          Raspberry___healthy       0.97      0.99      0.98        75
+                            Soybean___healthy       0.98      0.98      0.98       765
+                     Strawberry___Leaf_scorch       1.00      0.99      1.00       116
+                         Strawberry___healthy       0.97      0.97      0.97        72
+                      Tomato___Bacterial_spot       0.93      0.97      0.95       320
+                        Tomato___Early_blight       0.98      0.68      0.80       148
+                         Tomato___Late_blight       0.67      0.91      0.77       140
+                           Tomato___Leaf_Mold       0.99      0.97      0.98       140
+                  Tomato___Septoria_leaf_spot       0.91      0.95      0.93       148
+Tomato___Spider_mites Two-spotted_spider_mite       0.89      0.97      0.93       252
+                         Tomato___Target_Spot       0.97      0.88      0.92       212
+       Tomato___Tomato_Yellow_Leaf_Curl_Virus       0.98      1.00      0.99       412
+                             Tomato___healthy       1.00      0.97      0.99       148
+
+                                     accuracy                           0.96      6401
+                                    macro avg       0.96      0.94      0.94      6401
+                                 weighted avg       0.96      0.96      0.96      6401
