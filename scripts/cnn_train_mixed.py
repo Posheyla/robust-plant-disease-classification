@@ -7,7 +7,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, ConcatDataset
 from torchvision import transforms
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, classification_report
 
@@ -19,7 +19,7 @@ from dataset import PlantVillageDataset
 # =========================
 SPLIT_CSV = "data/split.csv"
 BASE_DIR = "raw_data/PlantVillage-Dataset"
-OUTPUT_DIR = Path("results/custom_cnn")
+OUTPUT_DIR = Path("results/custom_cnn_mixed")
 
 BATCH_SIZE = 64
 NUM_EPOCHS = 15
@@ -54,11 +54,13 @@ set_seed(RANDOM_SEED)
 # A simple [0,1] tensor pipeline is fine as a baseline.
 train_transform = transforms.Compose([
     transforms.ToPILImage(),
-    transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+    transforms.RandomResizedCrop(IMAGE_SIZE, scale=(0.75, 1.0)),
     transforms.RandomHorizontalFlip(),
-    transforms.RandomRotation(15),
-    transforms.ColorJitter(brightness=0.2, contrast=0.2),
+    transforms.RandomRotation(20),
+    transforms.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.2),
+    transforms.GaussianBlur(kernel_size=3, sigma=(0.1, 1.5)),
     transforms.ToTensor(),
+    transforms.RandomErasing(p=0.25, scale=(0.02, 0.15)),
 ])
 
 eval_transform = transforms.Compose([
@@ -239,7 +241,7 @@ def main():
     print(f"Using device: {DEVICE}")
 
     # Datasets
-    train_dataset = PlantVillageDataset(
+    train_color_dataset = PlantVillageDataset(
         split_csv=SPLIT_CSV,
         split="train",
         data_type="color",
@@ -247,6 +249,17 @@ def main():
         base_dir=BASE_DIR,
         label_to_idx=label_to_idx,
     )
+
+    train_seg_dataset = PlantVillageDataset(
+        split_csv=SPLIT_CSV,
+        split="train",
+        data_type="segmented",
+        transform=train_transform,
+        base_dir=BASE_DIR,
+        label_to_idx=label_to_idx,
+    )
+
+    train_dataset = ConcatDataset([train_color_dataset, train_seg_dataset])
 
     val_dataset = PlantVillageDataset(
         split_csv=SPLIT_CSV,
