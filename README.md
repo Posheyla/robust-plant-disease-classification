@@ -140,7 +140,7 @@ Full poster available here:
 
 Preview:
 
-![Research Poster](results/poster_preview.png)
+![Research Poster](results/poster_preview.PNG)
 
 ## Authors
 
