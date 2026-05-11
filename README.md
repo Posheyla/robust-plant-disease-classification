@@ -136,7 +136,7 @@ Results show that CNN performance remains relatively stable under brightness and
 
 Full poster available here:
 
-- [Poster PDF](results/poster.pdf)
+- [Poster PDF](results/CNN Poster.pdf)
 
 Preview:
 
