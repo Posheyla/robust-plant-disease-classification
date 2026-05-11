@@ -1,6 +1,16 @@
-# NN-Project: PlantVillage Classification
+# Robust Plant Disease Classification Under Real-World Distribution Shifts
 
-This project builds a machine learning pipeline for plant disease classification using the PlantVillage dataset, with a focus on **data leakage prevention**, **leaf-level splitting**, and **robustness testing (color vs segmented images)**.
+This project investigates the robustness of convolutional neural networks for plant disease classification under real-world distribution shifts.
+
+Using the PlantVillage dataset, we evaluate how models trained on clean color images generalize to segmented and shifted image distributions. The project focuses on:
+
+- Data leakage prevention through leaf-level splitting
+- CNN vs Logistic Regression comparison
+- Distribution shift evaluation
+- Robustness testing under noise, blur, and brightness changes
+- Real-world generalization analysis
+
+Developed as part of ECE 525: Neural Networks at NC State University.
 
 **Python version used:** 3.12  
 **Dependencies:** See `requirements.txt`
@@ -9,6 +19,16 @@ Install dependencies:
 ```
 pip install -r requirements.txt
 ```
+## Key Results
+
+| Model | Test Set | Accuracy | Macro-F1 |
+|---|---|---|---|
+| CNN | Color Images | 96% | 0.94 |
+| CNN | Segmented Images | 47% | 0.30 |
+| Logistic Regression | Color Images | 63.65% | - |
+
+Key finding:
+Models trained on clean benchmark data experience severe performance degradation under distribution shift.
 
 ---
 
@@ -78,14 +98,11 @@ Run the scripts in the following order:
   - Test Segmented
 
 ### 5. train.py
-- CNN model (ResNet18)
-- Trains on:
-  - Train Color
-- Validates on:
-  - Val Color
-- Tests on:
-  - Test Color
-  - Test Segmented
+- Custom CNN architecture
+- 4 convolutional blocks
+- BatchNorm + ReLU + MaxPooling
+- Dropout regularization
+- Adam optimizer
 
 ---
 
@@ -104,4 +121,29 @@ This allows us to study **background dependence and robustness**.
 
 ## Results
 
-All model outputs, logs, and evaluation metrics should be saved in:
+## Robustness Evaluation
+
+The trained models were evaluated under several real-world perturbations:
+
+- Brightness changes
+- Contrast changes
+- Blur corruption
+- Noise corruption
+- Segmented leaf distributions
+
+Results show that CNN performance remains relatively stable under brightness and contrast variation, but degrades significantly under blur, noise, and distribution shift conditions.
+
+## Authors
+
+- Luisa Chavez
+- Chase Wrenn
+- Joyce Zhou
+
+## Acknowledgements
+
+Dataset:
+PlantVillage Dataset by Mohanty et al.
+
+Course:
+ECE 525 — Neural Networks
+North Carolina State University
