@@ -132,6 +132,15 @@ The trained models were evaluated under several real-world perturbations:
 - Segmented leaf distributions
 
 Results show that CNN performance remains relatively stable under brightness and contrast variation, but degrades significantly under blur, noise, and distribution shift conditions.
+## Research Poster
+
+Full poster available here:
+
+- [Poster PDF](results/poster.pdf)
+
+Preview:
+
+![Research Poster](results/poster.png)
 
 ## Authors
 
